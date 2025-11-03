@@ -1,0 +1,31 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        run: echo "Linting step here (add eslint if needed)"
+
+      - name: Run tests
+        run: echo "Testing step here"
+
+      - name: Build HTML app container with Podman
+        run: |
+          podman build -t html-app:latest .
