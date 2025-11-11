@@ -1,164 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
     <title>Feedback Form</title>
     <style>
-      :root {
-        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      }
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: #f4f4f9;
-        margin: 0;
-      }
-      .card {
-        background: white;
-        max-width: 720px;
-        width: 100%;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      }
-      h1 {
-        font-size: 20px;
-        margin: 0 0 8px;
-      }
-      p.lead {
-        color: #374151;
-        margin: 0 0 18px;
-      }
-      form .row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      label {
-        display: block;
-        font-size: 13px;
-        margin-bottom: 6px;
-        color: #374151;
-      }
-      input[type="text"], input[type="email"], select, textarea {
-        width: 100%;
-        padding: 8px;
-        font-size: 14px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        resize: vertical;
-      }
-      .actions {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-        margin-top: 16px;
-      }
-      button {
-        background: #111827;
-        color: white;
-        padding: 10px 18px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #1f2937;
-      }
-      .success {
-        background: #ecfdf5;
-        border: 1px solid #6ee7b7;
-        color: #065f46;
-        padding: 8px 12px;
-        margin-top: 10px;
-        border-radius: 6px;
-      }
-      @media (max-width:640px){
-        form .row{
-          grid-template-columns:1fr;
+        /* Kaaarya-inspired design */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-      }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            width: 380px;
+            text-align: center;
+        }
+        h1 {
+            color: #111827;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        .note {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 12px;
+        }
     </style>
-  </head>
-  <body>
-    <div class="card">
-      <h1>Feedback Form</h1>
-      <p class="lead">Tell us what you think — quick feedback helps us improve!</p>
-
-      <form id="feedbackForm">
-        <div class="row">
-          <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-          </div>
-          <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label for="rating">Rating</label>
-            <select id="rating" name="rating" required>
-              <option value="">Select</option>
-              <option>Excellent</option>
-              <option>Good</option>
-              <option>Average</option>
-              <option>Poor</option>
-            </select>
-          </div>
-          <div>
-            <label for="category">Category</label>
-            <select id="category" name="category" required>
-              <option value="">Select</option>
-              <option>App</option>
-              <option>Website</option>
-              <option>Support</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label for="message">Your Feedback</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-
-        <div class="actions">
-          <button type="submit">Submit Feedback</button>
-        </div>
-
-        <div id="responseMessage" class="success" style="display:none;">
-          Thank you — your feedback has been saved.
-        </div>
-      </form>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback Form</h1>
+        <form action="/add-user" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Gmail" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p class="note">We respect your privacy. Your data is safe.</p>
     </div>
-
-    <script>
-      document.getElementById("feedbackForm").addEventListener("submit", async function(e){
-        e.preventDefault();
-        const data = {
-          name: document.getElementById("name").value,
-          email: document.getElementById("email").value,
-          rating: document.getElementById("rating").value,
-          category: document.getElementById("category").value,
-          message: document.getElementById("message").value
-        };
-
-        const res = await fetch("/submit-feedback", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-
-        if(res.ok){
-          document.getElementById("responseMessage").style.display = "block";
-          document.getElementById("feedbackForm").reset();
-        }
-      });
-    </script>
-  </body>
+</body>
 </html>
