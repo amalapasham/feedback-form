@@ -1,72 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Feedback Form</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+  <script>
+    document.getElementById("feedbackForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        mobile: document.getElementById("mobile").value.trim(),
+        feedback: document.getElementById("feedback").value.trim()
+      };
+
+      try {
+        const res = await fetch("/add-feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(()=>({message: "Server error"}));
+          alert("Error: " + (err.message || "Submit failed"));
+          return;
         }
-        .container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-            width: 350px;
-        }
-        h1 {
-            text-align: center;
-            color: #1f2937;
-            margin-bottom: 30px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        input:focus {
-            border-color: #3b82f6;
-            outline: none;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #3b82f6;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #2563eb;
-        }
-        .note {
-            text-align: center;
-            font-size: 14px;
-            color: #6b7280;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Feedback Form</h1>
-        <form action="/add-user" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <button type="submit">Submit</button>
-        </form>
-        <p class="note">We respect your privacy. Your data is safe.</p>
-    </div>
+
+        const result = await res.json();
+        alert(result.message || "Feedback submitted successfully!");
+        // optional: reset form
+        document.getElementById("feedbackForm").reset();
+      } catch (err) {
+        console.error("Network error:", err);
+        alert("Network error — make sure the server is running.");
+      }
+    });
+  </script>
 </body>
 </html>
